@@ -191,6 +191,19 @@ require('lazy').setup({
     requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
 
+  {
+    -- Write files with sudo command
+    "lambdalisue/suda.vim"
+  },
+
+  -- Better MarkDown writing
+  {
+    "ellisonleao/glow.nvim", config = true, cmd = "Glow"
+  },
+  {
+    "ixru/nvim-markdown"
+  }
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -297,6 +310,10 @@ require('telescope').setup {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
+      n = {
+        -- ['<A-j><A-k>'] = requiere('telescope').actions.close()
+
+      }
     },
   },
 }
