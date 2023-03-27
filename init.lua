@@ -202,6 +202,11 @@ require('lazy').setup({
   },
   {
     "ixru/nvim-markdown"
+  },
+
+  {
+    -- Github Copilot
+    "github/copilot.vim"
   }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -261,6 +266,10 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Better looking tabs
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
 
 -- [[ Basic Keymaps ]]
 
