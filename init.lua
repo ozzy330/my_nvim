@@ -197,12 +197,11 @@ require('lazy').setup({
   },
 
   -- Better MarkDown writing
-  {
-    "ellisonleao/glow.nvim", config = true, cmd = "Glow"
-  },
-  {
-    "ixru/nvim-markdown"
-  },
+  "ixru/nvim-markdown",
+  -- Show math equations prettier
+  "jbyuki/nabla.nvim",
+  -- Table mode for MarkDown
+  "dhruvasagar/vim-table-mode",
 
   {
     -- Github Copilot
@@ -282,6 +281,12 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set({'n', 'i', 'v'}, '<A-j><A-k>', "<Esc>", { silent = true })
 vim.keymap.set('t', '<A-j><A-k>', "<C-\\><C-N>", { silent = true })
+
+-- Prittier math equations
+vim.keymap.set('n', '<leader>p', ":lua require('nabla').toggle_virt()<CR>", { silent = true })
+require"nabla".enable_virt({
+  silent = true,     -- silents error messages
+})
 
 -- Pop-up terminal
 vim.keymap.set('n', 'tt', ":ToggleTerm direction=float<CR>", { silent = true })
