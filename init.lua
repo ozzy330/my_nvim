@@ -93,7 +93,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' , 'hrsh7th/cmp-path'},
   },
 
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
@@ -179,8 +179,31 @@ require('lazy').setup({
     end
   },
 
+  {
+    "nvim-tree/nvim-web-devicons"
+  },
+  {
+    "folke/trouble.nvim",
+    requires = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  },
+
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*" 
+  },
+
   { -- Pop up terminal
-    'akinsho/toggleterm.nvim', version = "*", 
+    'akinsho/toggleterm.nvim', version = "*",
     opts = {
     }
   },
@@ -232,7 +255,7 @@ require('lazy').setup({
 vim.o.hlsearch = false
 
 -- Make line numbers default
-vim.wo.number = true
+vim.wo.number = false
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -283,10 +306,7 @@ vim.keymap.set({'n', 'i', 'v'}, '<A-j><A-k>', "<Esc>", { silent = true })
 vim.keymap.set('t', '<A-j><A-k>', "<C-\\><C-N>", { silent = true })
 
 -- Prittier math equations
-vim.keymap.set('n', '<leader>p', ":lua require('nabla').toggle_virt()<CR>", { silent = true })
-require"nabla".enable_virt({
-  silent = true,     -- silents error messages
-})
+vim.keymap.set('n', '<leader>p', ":lua require('nabla').toggle_virt({silent = true})<CR>", { silent = true })
 
 -- Pop-up terminal
 vim.keymap.set('n', 'tt', ":ToggleTerm direction=float<CR>", { silent = true })
@@ -558,6 +578,7 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'path' },
   },
 }
 
