@@ -93,7 +93,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' , 'hrsh7th/cmp-path'},
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' , 'hrsh7th/cmp-path'},
   },
 
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
@@ -229,6 +229,19 @@ require('lazy').setup({
   {
     -- Github Copilot
     "github/copilot.vim"
+  },
+
+  {
+    'MunifTanjim/prettier.nvim'
+  },
+  {
+    'jidn/vim-dbml'
+  },
+  {
+    "sindrets/diffview.nvim"
+  },
+  {
+    'norcalli/nvim-colorizer.lua'
   }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -445,6 +458,9 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- LSP settings.
+-- For format
+require("prettier").setup()
+
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -495,11 +511,15 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
+
+  eslint = {},
+
+  tailwindcss = {},
 
   lua_ls = {
     Lua = {
@@ -579,8 +599,11 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
+    { name = 'buffer', keyword_length = 3},
   },
 }
+
+require'colorizer'.setup()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
