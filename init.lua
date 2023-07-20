@@ -112,9 +112,12 @@ require('lazy').setup({
 
   { -- Theme inspired by Atom
     'navarasu/onedark.nvim',
+  },
+  {
+   'rose-pine/neovim', name = 'rose-pine',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'rose-pine'
     end,
   },
 
@@ -124,7 +127,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'rose-pine',
         component_separators = '|',
         section_separators = '',
       },
@@ -232,7 +235,7 @@ require('lazy').setup({
   },
 
   {
-    'MunifTanjim/prettier.nvim'
+    'prettier/vim-prettier'
   },
   {
     'jidn/vim-dbml'
@@ -242,6 +245,15 @@ require('lazy').setup({
   },
   {
     'norcalli/nvim-colorizer.lua'
+  },
+  {
+    'jidn/vim-dbml'
+  },
+  -- Trabajar con Data Bases
+  {
+    "tpope/vim-dadbod",
+    "kristijanhusak/vim-dadbod-completion",
+    "kristijanhusak/vim-dadbod-ui"
   }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -263,6 +275,9 @@ require('lazy').setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+--
+vim.o.laststatus = 3
+vim.o.winbar = "%=%m %f"
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -389,7 +404,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -458,8 +473,6 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- LSP settings.
--- For format
-require("prettier").setup()
 
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -598,6 +611,7 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'vim-dadbod-completion' },
     { name = 'path' },
     { name = 'buffer', keyword_length = 3},
   },
