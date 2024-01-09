@@ -28,7 +28,7 @@ You should run that command and read that help section for more information.
 In addition, I have some `NOTE:` items throughout the file.
 These are for you, the reader to help understand what is happening. Feel free to delete
 them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
+are first enering a few different constructs in your nvim config.
 
 I hope you enjoy your Neovim journey,
 - TJ
@@ -93,7 +93,8 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' , 'hrsh7th/cmp-path'},
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-path' },
   },
 
   { -- Adds git releated signs to the gutter, as well as utilities for managing changes
@@ -114,7 +115,8 @@ require('lazy').setup({
     'navarasu/onedark.nvim',
   },
   {
-   'rose-pine/neovim', name = 'rose-pine',
+    'rose-pine/neovim',
+    name = 'rose-pine',
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'rose-pine'
@@ -135,10 +137,18 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+
+  -- Files manager
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -202,11 +212,12 @@ require('lazy').setup({
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = true,
     -- Uncomment next line if you want to follow only stable versions
-    -- version = "*" 
+    -- version = "*"
   },
 
   { -- Pop up terminal
-    'akinsho/toggleterm.nvim', version = "*",
+    'akinsho/toggleterm.nvim',
+    version = "*",
     opts = {
     }
   },
@@ -230,11 +241,6 @@ require('lazy').setup({
   "dhruvasagar/vim-table-mode",
 
   {
-    -- Github Copilot
-    "github/copilot.vim"
-  },
-
-  {
     'prettier/vim-prettier'
   },
   {
@@ -252,9 +258,39 @@ require('lazy').setup({
   -- Trabajar con Data Bases
   {
     "tpope/vim-dadbod",
-    "kristijanhusak/vim-dadbod-completion",
-    "kristijanhusak/vim-dadbod-ui"
-  }
+    "kristijanhusak/vim-dadbod-ui",
+    "kristijanhusak/vim-dadbod-completion"
+  },
+  -- Debuging UI
+  {
+    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap"
+  },
+
+  -- IA Codeium
+  -- {
+  --   'Exafunction/codeium.vim',
+  --   event = 'BufEnter',
+  --   config = function()
+  --     -- Change '<C-g>' here to any keycode you like.
+  --     vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+  --     vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+  --     vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+  --     vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+  --   end
+  -- },
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+  {
+    "ggandor/leap.nvim",
+    config = function() require("leap").set_default_keymaps() end
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -273,6 +309,19 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+-- Debuging UI
+local dap = require("dap")
+dap.configurations.c = {
+  {
+    name = "Launch",
+    type = "gdb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() '/', 'file')
+    end,
+    cwd = "${workspaceFolder}",
+  },
+}
 -- [[ Setting options ]]
 -- See `:help vim.o`
 --
@@ -287,6 +336,9 @@ vim.wo.number = false
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
+
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -330,11 +382,21 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-vim.keymap.set({'n', 'i', 'v'}, '<A-j><A-k>', "<Esc>", { silent = true })
+vim.keymap.set({ 'n', 'i', 'v' }, '<A-j><A-k>', "<Esc>", { silent = true })
 vim.keymap.set('t', '<A-j><A-k>', "<C-\\><C-N>", { silent = true })
+-- New tab
+vim.keymap.set('n', '<leader>tn', ":tabnew<CR>", { silent = true })
+vim.keymap.set('n', 'tn', ":tabn<CR>", { silent = true })
+vim.keymap.set('n', 'tp', ":tabp<CR>", { silent = true })
+-- Check troubles
+vim.keymap.set('n', '<leader>dt', ":TroubleToggle  document_diagnostics<CR>", { silent = true })
+vim.keymap.set('n', '<leader>wt', ":TroubleToggle workspace_diagnostics<CR>", { silent = true })
 
 -- Prittier math equations
 vim.keymap.set('n', '<leader>p', ":lua require('nabla').toggle_virt({silent = true})<CR>", { silent = true })
+
+-- ZenMode
+vim.keymap.set('n', 'zm', ":ZenMode<CR>", { silent = true })
 
 -- Pop-up terminal
 vim.keymap.set('n', 'tt', ":ToggleTerm direction=float<CR>", { silent = true })
@@ -351,6 +413,23 @@ require("telescope").setup {
 }
 require("telescope").load_extension "file_browser"
 vim.keymap.set('n', 'ff', ":Telescope file_browser<CR>", { silent = true })
+require("oil").setup({
+  columns = {
+    "icon",
+    -- "permissions",
+    -- "size",
+    -- "mtime",
+  },
+  view_options = {
+    -- Show files and directories that start with "."
+    show_hidden = true,
+    sort = {
+      { "name", "asc" },
+    },
+  }
+})
+vim.keymap.set('n', 'ff', ":Oil<CR>", { silent = true })
+vim.keymap.set('n', '<leader>lc', ":TodoTelescope<CR>", { silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -394,7 +473,8 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>sf', function() require('telescope.builtin').find_files({hidden = true}) end, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', function() require('telescope.builtin').find_files({ hidden = true }) end,
+  { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
@@ -608,15 +688,15 @@ cmp.setup {
     end, { 'i', 's' }),
   },
   sources = {
+    { name = 'vim-dadbod-completion' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-    { name = 'vim-dadbod-completion' },
     { name = 'path' },
-    { name = 'buffer', keyword_length = 3},
+    { name = 'buffer',               keyword_length = 3 },
   },
 }
 
-require'colorizer'.setup()
+require 'colorizer'.setup()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
