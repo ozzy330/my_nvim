@@ -386,6 +386,7 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<A-j><A-k>', "<Esc>", { silent = true })
 vim.keymap.set('t', '<A-j><A-k>', "<C-\\><C-N>", { silent = true })
 -- New tab
 vim.keymap.set('n', '<leader>tn', ":tabnew<CR>", { silent = true })
+vim.keymap.set('n', '<leader>tq', ":tabclose<CR>", { silent = true })
 vim.keymap.set('n', 'tn', ":tabn<CR>", { silent = true })
 vim.keymap.set('n', 'tp', ":tabp<CR>", { silent = true })
 -- Check troubles
