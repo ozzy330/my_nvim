@@ -402,7 +402,10 @@ vim.keymap.set('n', 'zm', ":ZenMode<CR>", { silent = true })
 -- Pop-up terminal
 vim.keymap.set('n', 'tt', ":ToggleTerm direction=float<CR>", { silent = true })
 
--- Telescope file browser
+-- Delete a word
+vim.keymap.set('i', '<C-BS>', "<C-W>", { silent = true })
+
+-- Telescope 
 require("telescope").setup {
   extensions = {
     file_browser = {
@@ -606,7 +609,8 @@ end
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
   clangd = {},
-  -- gopls = {},
+  gopls = {},
+  templ = {},
   pyright = {},
   -- rust_analyzer = {},
   tsserver = {},
