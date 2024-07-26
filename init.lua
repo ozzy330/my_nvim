@@ -239,6 +239,26 @@ require('lazy').setup({
   "jbyuki/nabla.nvim",
   -- Table mode for MarkDown
   "dhruvasagar/vim-table-mode",
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+
+  -- AsciiDoc preview
+  {
+    'tigion/nvim-asciidoc-preview',
+    cmd = { 'AsciiDocPreview' },
+    ft = { 'asciidoc' },
+    build = 'cd server && npm install',
+    opts = {
+      -- Add user configuration here
+    },
+  },
+  {
+    'habamax/vim-asciidoctor'
+  },
 
   {
     'prettier/vim-prettier'
@@ -259,7 +279,17 @@ require('lazy').setup({
   {
     "tpope/vim-dadbod",
     "kristijanhusak/vim-dadbod-ui",
-    "kristijanhusak/vim-dadbod-completion"
+    "kristijanhusak/vim-dadbod-completion",
+    config = function()
+      vim.g.db_ui_auto_execute_table_helpers = 1
+      vim.g.db_ui_debug = 1
+    end,
+    "tpope/vim-dotenv",
+  },
+
+  {
+    "giusgad/pets.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "giusgad/hologram.nvim" },
   },
   -- Debuging UI
   {
@@ -292,6 +322,12 @@ require('lazy').setup({
     config = function() require("leap").set_default_keymaps() end
   },
 
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -386,7 +422,7 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<A-j><A-k>', "<Esc>", { silent = true })
 vim.keymap.set('t', '<A-j><A-k>', "<C-\\><C-N>", { silent = true })
 -- New tab
 vim.keymap.set('n', '<leader>tn', ":tabnew<CR>", { silent = true })
-vim.keymap.set('n', '<leader>tq', ":tabclose<CR>", { silent = true })
+vim.keymap.set('n', '<leader>td', ":tabclose<CR>", { silent = true })
 vim.keymap.set('n', 'tn', ":tabn<CR>", { silent = true })
 vim.keymap.set('n', 'tp', ":tabp<CR>", { silent = true })
 -- Check troubles
@@ -405,7 +441,15 @@ vim.keymap.set('n', 'tt', ":ToggleTerm direction=float<CR>", { silent = true })
 -- Delete a word
 vim.keymap.set('i', '<C-BS>', "<C-W>", { silent = true })
 
--- Telescope 
+
+local function get_env_var(var)
+  return vim.fn.getenv(var) or ""
+end
+vim.g.dadbod = {
+  url = get_env_var("DB_CONNECTION")
+}
+
+-- Telescope
 require("telescope").setup {
   extensions = {
     file_browser = {
@@ -613,11 +657,14 @@ local servers = {
   templ = {},
   pyright = {},
   -- rust_analyzer = {},
+  phpactor = {},
+  intelephense = {},
   tsserver = {},
   eslint = {},
   tailwindcss = {},
   html = {},
   cssls = {},
+  grammarly = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -696,6 +743,7 @@ cmp.setup {
     { name = 'vim-dadbod-completion' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = "supermaven" },
     { name = 'path' },
     { name = 'buffer',               keyword_length = 3 },
   },
